@@ -1,7 +1,12 @@
+import com.google.devtools.ksp.gradle.KspExtension
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -37,6 +42,9 @@ android {
     buildFeatures {
         compose = true
     }
+    extensions.configure<KspExtension> {
+        arg("circuit.codegen.mode", "hilt")
+    }
 }
 
 dependencies {
@@ -56,4 +64,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //circuit
+    implementation(libs.bundles.circuit)
+    ksp(libs.circuit.codegen.ksp)
+
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }
