@@ -68,6 +68,7 @@ dependencies {
     //circuit
     implementation(libs.bundles.circuit)
     ksp(libs.circuit.codegen.ksp)
+    implementation(libs.circuit.codegen.annotation)
 
     //hilt
     implementation(libs.hilt.android)
