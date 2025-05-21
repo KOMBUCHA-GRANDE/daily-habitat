@@ -77,7 +77,8 @@ fun HomeUiScreen(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                text = "새로운 습관 만들기"
+                text = "새로운 습관 만들기",
+                onClick = {},
             )
             LazyColumn(
                 modifier = Modifier
