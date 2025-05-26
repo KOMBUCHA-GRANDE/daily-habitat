@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: daily-habitat-backend
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: debug                   # sql 쿼리
+    org.hibernate.type.descriptor.sql: trace   # 타입 변환 바인딩 시각화
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # 바인딩 되는 값 시각화
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: DEBUG # 예외 로그 확인
+    com.kombuchagrande.dailyhabit: debug
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
