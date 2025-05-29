@@ -1,4 +1,4 @@
-package com.kombucha.dailyhabitat.ui.theme
+package com.kombucha.dailyhabitat.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

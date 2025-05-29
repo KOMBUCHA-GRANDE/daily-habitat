@@ -1,4 +1,4 @@
-package com.kombucha.dailyhabitat.ui.common.topbar
+package com.kombucha.dailyhabitat.presentation.ui.common.topbar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
