@@ -1,4 +1,4 @@
-package com.kombucha.dailyhabitat.feature.home
+package com.kombucha.dailyhabitat.presentation.feature.home
 
 import androidx.compose.runtime.Composable
 import com.slack.circuit.codegen.annotations.CircuitInject
@@ -12,7 +12,6 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
 
 class HomePresenter @AssistedInject constructor(
-    @Assisted private val screen: HomeScreen,
     @Assisted private val navigator: Navigator,
 ) : Presenter<HomeUiState> {
 
@@ -26,11 +25,10 @@ class HomePresenter @AssistedInject constructor(
         }
     }
 
-    @CircuitInject(HomeScreen::class, ActivityRetainedComponent::class)
+    @CircuitInject(Screen::class, ActivityRetainedComponent::class)
     @AssistedFactory
     fun interface  Factory {
         fun create(
-            screen: HomeScreen,
             navigator: Navigator,
         ): HomePresenter
     }
