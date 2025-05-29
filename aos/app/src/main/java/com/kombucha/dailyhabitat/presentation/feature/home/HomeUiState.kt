@@ -1,4 +1,4 @@
-package com.kombucha.dailyhabitat.feature.home
+package com.kombucha.dailyhabitat.presentation.feature.home
 
 import com.slack.circuit.runtime.CircuitUiState
 

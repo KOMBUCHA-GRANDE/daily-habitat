@@ -1,6 +1,8 @@
-package com.kombucha.dailyhabitat.feature.home.composable
+package com.kombucha.dailyhabitat.presentation.feature.home.composable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,11 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kombucha.dailyhabitat.ui.common.button.TextButtonWithBorder
+import com.kombucha.dailyhabitat.presentation.ui.common.button.TextButtonWithBorder
 
 @Composable
 fun HabitBox(
@@ -33,6 +36,7 @@ fun HabitBox(
     Column (
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
+            .border(width = 0.7.dp, shape = RoundedCornerShape(12.dp), color = Color.LightGray)
             .padding(12.dp),
     ) {
         Row(
@@ -79,7 +83,9 @@ fun HabitBox(
             color = Color.Black,
         )
         TextButtonWithBorder(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 8.dp),
             text = "오늘의 일기 작성하기",
             onClick = {},

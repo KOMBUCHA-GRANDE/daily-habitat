@@ -1,5 +1,6 @@
-package com.kombucha.dailyhabitat.ui.common.button
+package com.kombucha.dailyhabitat.presentation.ui.common.button
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,17 +21,19 @@ fun TextButtonWithLeftButton(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     image: @Composable () -> Unit,
+    buttonColor: Color = Color.Black,
     text: String,
     textColor: Color = Color.White,
     onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
+            .background(buttonColor)
             .padding(contentPadding)
             .then(modifier)
             .clickable { onClick.invoke() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
     ) {
         image.invoke()
         Spacer(modifier = Modifier.size(12.dp))

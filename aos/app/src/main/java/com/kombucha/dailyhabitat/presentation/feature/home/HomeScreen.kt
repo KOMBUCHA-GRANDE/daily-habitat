@@ -1,7 +1,8 @@
-package com.kombucha.dailyhabitat.feature.home
+package com.kombucha.dailyhabitat.presentation.feature.home
 
 import android.app.Activity
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
@@ -20,8 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kombucha.dailyhabitat.ui.common.button.TextButtonWithLeftButton
-import com.kombucha.dailyhabitat.ui.common.topbar.TopBar
+import com.kombucha.dailyhabitat.presentation.feature.home.composable.HabitBox
+import com.kombucha.dailyhabitat.presentation.ui.common.button.TextButtonWithLeftButton
+import com.kombucha.dailyhabitat.presentation.ui.common.topbar.TopBar
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
@@ -37,7 +40,8 @@ fun HomeUiScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize(),
         topBar = {
             TopBar(
                 leftAction = { modifier ->
@@ -82,10 +86,28 @@ fun HomeUiScreen(
             )
             LazyColumn(
                 modifier = Modifier
+                    .padding(top = 24.dp)
                     .fillMaxWidth(),
-                contentPadding = PaddingValues(bottom = 12.dp)
+                contentPadding = PaddingValues(bottom = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                item {
+                    HabitBox(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
+                item {
+                    HabitBox(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                item {
+                    HabitBox(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
 

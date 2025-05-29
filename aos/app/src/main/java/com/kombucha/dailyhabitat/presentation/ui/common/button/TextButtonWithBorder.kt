@@ -1,4 +1,4 @@
-package com.kombucha.dailyhabitat.ui.common.button
+package com.kombucha.dailyhabitat.presentation.ui.common.button
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,12 +25,11 @@ fun TextButtonWithBorder(
         text = text,
         fontSize = 14.sp,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .padding(contentPadding)
+        modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(12.dp))
-            .then(modifier)
             .clickable { onClick.invoke() }
+            .padding(contentPadding)
 
     )
 }
