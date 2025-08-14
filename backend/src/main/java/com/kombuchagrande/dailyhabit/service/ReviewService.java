@@ -41,6 +41,19 @@ public class ReviewService {
     return reviewMapper.toDto(savedReview);
   }
 
+  @Transactional(readOnly = true)
+  public ReviewDto get(Long reviewId) {
+    Review review = getReviewOrThrow(reviewId);
+
+    return reviewMapper.toDto(review);
+  }
+
+  // TODO: 회고 커스텀 예외로 변경
+  private Review getReviewOrThrow(Long reviewId) {
+    return reviewRepository.findById(reviewId)
+        .orElseThrow(IllegalArgumentException::new);
+  }
+
   // TODO: Habit 커스텀 예외로 변경
   private Habit getHabitOrThrow(Long habitId) {
     return habitRepository.findById(habitId)
