@@ -13,6 +13,7 @@ import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
 import com.kombuchagrande.dailyhabit.entity.Habit;
 import com.kombuchagrande.dailyhabit.entity.Review;
 import com.kombuchagrande.dailyhabit.entity.enums.PeriodType;
+import com.kombuchagrande.dailyhabit.exception.review.ReviewNotFoundException;
 import com.kombuchagrande.dailyhabit.mapper.ReviewMapper;
 import com.kombuchagrande.dailyhabit.repository.HabitRepository;
 import com.kombuchagrande.dailyhabit.repository.ReviewRepository;
@@ -123,7 +124,7 @@ class ReviewServiceTest {
   public class GetReviewTest {
 
     @Test
-    @DisplayName("회고 상세 조회")
+    @DisplayName("회고 상세 조회 성공")
     void get_review_success() {
       // given
       given(reviewRepository.findById(reviewId)).willReturn(Optional.of(review));
@@ -137,6 +138,18 @@ class ReviewServiceTest {
       assertThat(result.id()).isEqualTo(reviewId);
       then(reviewRepository).should(times(1)).findById(reviewId);
       then(reviewMapper).should(times(1)).toDto(review);
+    }
+
+    @Test
+    @DisplayName("회고 상세 조회 실패 - 존재하지 않는 회고 Id")
+    void get_review_throwsReviewNotFoundException_whenReviewDoseNotExist() {
+      // given
+      given(reviewRepository.findById(reviewId)).willReturn(Optional.empty());
+
+      // when & then
+      assertThrows(ReviewNotFoundException.class,
+          () -> reviewService.get(reviewId));
+      then(reviewRepository).should(times(1)).findById(reviewId);
     }
   }
 }
