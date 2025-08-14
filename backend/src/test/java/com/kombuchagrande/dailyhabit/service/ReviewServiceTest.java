@@ -1,13 +1,12 @@
 package com.kombuchagrande.dailyhabit.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import com.kombuchagrande.dailyhabit.dto.review.ReviewCreateRequest;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
@@ -47,7 +46,7 @@ class ReviewServiceTest {
   private Long habitId;
   private Long reviewId;
   private Habit habit;
-  private ReviewCreateRequest request;
+  private ReviewCreateRequest reviewCreateRequest;
   private Review review;
   private ReviewDto reviewDto;
 
@@ -58,7 +57,7 @@ class ReviewServiceTest {
     reviewId = 1L;
     review = mock(Review.class);
 
-    request = new ReviewCreateRequest(
+    reviewCreateRequest = new ReviewCreateRequest(
         habitId,
         PeriodType.WEEKLY,
         2,
@@ -72,13 +71,13 @@ class ReviewServiceTest {
     reviewDto = new ReviewDto(
         reviewId,
         habitId,
-        request.periodType(),
-        request.periodNumber(),
-        request.title(),
-        request.content(),
-        request.emoji(),
+        reviewCreateRequest.periodType(),
+        reviewCreateRequest.periodNumber(),
+        reviewCreateRequest.title(),
+        reviewCreateRequest.content(),
+        reviewCreateRequest.emoji(),
         "videoUrl",
-        request.resolution(),
+        reviewCreateRequest.resolution(),
         LocalDateTime.now()
     );
   }
@@ -96,13 +95,26 @@ class ReviewServiceTest {
       given(reviewMapper.toDto(review)).willReturn(reviewDto);
 
       // when
-      ReviewDto result = reviewService.create(request);
+      ReviewDto result = reviewService.create(reviewCreateRequest);
 
       // then
       assertThat(result).isEqualTo(reviewDto);
       then(habitRepository).should(times(1)).findById(habitId);
       then(reviewRepository).should(times(1)).save(any(Review.class));
       then(reviewMapper).should(times(1)).toDto(review);
+    }
+
+    @Test
+    @DisplayName("회고 생성 실패 - 존재하지 않는 습관 Id")
+    // TODO: 습관 커스텀 예외로 변경
+    void create_review_throwsIllegalArgumentException_whenHabitDoseNotExist() {
+      // given
+      given(habitRepository.findById(habitId)).willReturn(Optional.empty());
+
+      // when & then
+      assertThrows(IllegalArgumentException.class,
+          () -> reviewService.create(reviewCreateRequest));
+      then(habitRepository).should(times(1)).findById(habitId);
     }
   }
 }
