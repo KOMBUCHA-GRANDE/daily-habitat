@@ -8,28 +8,29 @@ import java.time.LocalDate;
 
 public record ReviewCreateRequest(
 
-    @NotNull
+    @NotNull(message = "habitId는 필수입니다.")
     Long habitId,
 
-    @NotNull
+    @NotNull(message = "periodType은 필수입니다.")
     PeriodType periodType,
 
-    @Min(value = 1)
+    @Min(value = 1, message = "periodNumber는 1 이상이어야 합니다.")
     int periodNumber,
 
-    @NotNull
+    @NotNull(message = "startDate 필수입니다.")
     LocalDate startDate,
 
-    @NotBlank
+    @NotBlank(message = "title은 필수입니다..")
     String title,
 
-    @NotBlank
+    @NotBlank(message = "content는 필수입니다.")
     String content,
 
     Integer emoji,
 
-    @NotBlank
+    @NotBlank(message = "resolution은 필수입니다.")
     String resolution
 ) {
 
 }
+
