@@ -1,8 +1,8 @@
 package com.kombuchagrande.dailyhabit.controller;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -86,6 +86,29 @@ class ReviewControllerTest {
               .contentType(MediaType.APPLICATION_JSON)
               .content(objectMapper.writeValueAsString(reviewCreateRequest)))
           .andExpect(status().isCreated())
+          .andExpect(jsonPath("$.id").value(1L))
+          .andExpect(jsonPath("$.habitId").value(1L))
+          .andExpect(jsonPath("$.title").value("title"))
+          .andExpect(jsonPath("$.content").value("content"))
+          .andExpect(jsonPath("$.emoji").value(1))
+          .andExpect(jsonPath("$.resolution").value("resolution"));
+    }
+  }
+
+  @Nested
+  @DisplayName("회고 상세 조회")
+  public class GetReviewTest {
+
+    @Test
+    @DisplayName("회고 상세 조회 성공")
+    void get_review_success() throws Exception {
+      // given
+      given(reviewService.get(reviewId)).willReturn(reviewDto);
+
+      // when & then
+      mockMvc.perform(get("/api/reviews/{reviewId}", reviewId)
+              .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isOk())
           .andExpect(jsonPath("$.id").value(1L))
           .andExpect(jsonPath("$.habitId").value(1L))
           .andExpect(jsonPath("$.title").value("title"))
