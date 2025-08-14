@@ -4,6 +4,7 @@ import com.kombuchagrande.dailyhabit.dto.review.ReviewCreateRequest;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
 import com.kombuchagrande.dailyhabit.entity.Habit;
 import com.kombuchagrande.dailyhabit.entity.Review;
+import com.kombuchagrande.dailyhabit.exception.review.ReviewNotFoundException;
 import com.kombuchagrande.dailyhabit.mapper.ReviewMapper;
 import com.kombuchagrande.dailyhabit.repository.HabitRepository;
 import com.kombuchagrande.dailyhabit.repository.ReviewRepository;
@@ -48,10 +49,9 @@ public class ReviewService {
     return reviewMapper.toDto(review);
   }
 
-  // TODO: 회고 커스텀 예외로 변경
   private Review getReviewOrThrow(Long reviewId) {
     return reviewRepository.findById(reviewId)
-        .orElseThrow(IllegalArgumentException::new);
+        .orElseThrow(() -> ReviewNotFoundException.withId(reviewId));
   }
 
   // TODO: Habit 커스텀 예외로 변경
