@@ -117,4 +117,26 @@ class ReviewServiceTest {
       then(habitRepository).should(times(1)).findById(habitId);
     }
   }
+
+  @Nested
+  @DisplayName("회고 상세 조회")
+  public class GetReviewTest {
+
+    @Test
+    @DisplayName("회고 상세 조회")
+    void get_review_success() {
+      // given
+      given(reviewRepository.findById(reviewId)).willReturn(Optional.of(review));
+      given(reviewMapper.toDto(review)).willReturn(reviewDto);
+
+      // when
+      ReviewDto result = reviewService.get(reviewId);
+
+      // then
+      assertThat(result).isNotNull();
+      assertThat(result.id()).isEqualTo(reviewId);
+      then(reviewRepository).should(times(1)).findById(reviewId);
+      then(reviewMapper).should(times(1)).toDto(review);
+    }
+  }
 }
