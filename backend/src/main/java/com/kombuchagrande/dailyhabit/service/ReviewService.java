@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewService {
 
+  private final ReviewMapper reviewMapper;
   private final ReviewRepository reviewRepository;
 
   private final HabitRepository habitRepository;
@@ -35,10 +36,9 @@ public class ReviewService {
         .videoUrl(null)
         .resolution(request.resolution())
         .build();
-
     Review savedReview = reviewRepository.save(review);
 
-    return ReviewMapper.toDto(savedReview);
+    return reviewMapper.toDto(savedReview);
   }
 
   // TODO: Habit 커스텀 예외로 변경

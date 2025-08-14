@@ -2,10 +2,12 @@ package com.kombuchagrande.dailyhabit.mapper;
 
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
 import com.kombuchagrande.dailyhabit.entity.Review;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReviewMapper {
 
-  public static ReviewDto toDto(Review review) {
+  public ReviewDto toDto(Review review) {
     if (review == null) {
       return null;
     }
