@@ -33,7 +33,7 @@ public class ReviewService {
         .content(request.content())
         .emoji(request.emoji())
         // TODO: videoUrl
-        .videoUrl(null)
+        .videoUrl("videoUrl")
         .resolution(request.resolution())
         .build();
     Review savedReview = reviewRepository.save(review);
