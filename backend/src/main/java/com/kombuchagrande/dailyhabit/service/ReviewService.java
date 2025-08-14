@@ -21,8 +21,7 @@ public class ReviewService {
 
   @Transactional
   public ReviewDto create(ReviewCreateRequest request) {
-    Habit habit = habitRepository.findById(request.habitId())
-        .orElseThrow(IllegalArgumentException::new);
+    Habit habit = getHabitOrThrow(request.habitId());
 
     Review review = Review.builder()
         .habit(habit)
@@ -40,5 +39,11 @@ public class ReviewService {
     Review savedReview = reviewRepository.save(review);
 
     return ReviewMapper.toDto(savedReview);
+  }
+
+  // TODO: Habit 커스텀 예외로 변경
+  private Habit getHabitOrThrow(Long habitId) {
+    return habitRepository.findById(habitId)
+        .orElseThrow(IllegalArgumentException::new);
   }
 }

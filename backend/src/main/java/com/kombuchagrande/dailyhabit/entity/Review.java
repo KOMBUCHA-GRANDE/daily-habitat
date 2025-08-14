@@ -42,5 +42,4 @@ public class Review extends BaseSoftDeletableEntity{
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String resolution;
-
 }
