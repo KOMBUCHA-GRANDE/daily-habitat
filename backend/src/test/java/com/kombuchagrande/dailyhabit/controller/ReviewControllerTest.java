@@ -1,6 +1,7 @@
 package com.kombuchagrande.dailyhabit.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -10,10 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewCreateRequest;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
+import com.kombuchagrande.dailyhabit.dto.review.ReviewDtoCursorResponse;
 import com.kombuchagrande.dailyhabit.entity.enums.PeriodType;
 import com.kombuchagrande.dailyhabit.service.ReviewService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -40,6 +43,7 @@ class ReviewControllerTest {
   private Long reviewId;
   private ReviewCreateRequest reviewCreateRequest;
   private ReviewDto reviewDto;
+  private ReviewDtoCursorResponse cursorResponse;
 
   @BeforeEach
   void setUp() {
@@ -68,6 +72,12 @@ class ReviewControllerTest {
         "videoUrl",
         reviewCreateRequest.resolution(),
         LocalDateTime.now()
+    );
+
+    cursorResponse = new ReviewDtoCursorResponse(
+        List.of(reviewDto),
+        1L,
+        true
     );
   }
 
@@ -115,6 +125,36 @@ class ReviewControllerTest {
           .andExpect(jsonPath("$.content").value("content"))
           .andExpect(jsonPath("$.emoji").value(1))
           .andExpect(jsonPath("$.resolution").value("resolution"));
+    }
+  }
+
+  @Nested
+  @DisplayName("회고 전체 조회")
+  public class GetReviewsTest {
+
+    @Test
+    @DisplayName("회고 전체 조회 성공")
+    void getReviews_success() throws Exception {
+      // given
+      given(reviewService.getReviews(
+          eq(1L),
+          eq(PeriodType.WEEKLY),
+          any(),
+          any(),
+          any(),
+          any(),
+          any()
+      )).willReturn(cursorResponse);
+
+      // when & then
+      mockMvc.perform(get("/api/reviews")
+              .param("habitId", "1")
+              .param("periodType", "WEEKLY")
+              .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.content[0].id").value(1))
+          .andExpect(jsonPath("$.lastIndex").value(1))
+          .andExpect(jsonPath("$.hasNext").value(true));
     }
   }
 }

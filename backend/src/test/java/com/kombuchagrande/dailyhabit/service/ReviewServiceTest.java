@@ -135,7 +135,7 @@ class ReviewServiceTest {
 
     @Test
     @DisplayName("회고 상세 조회 성공")
-    void getReview_success() {
+    void get_review_success() {
       // given
       given(reviewRepository.findById(reviewId)).willReturn(Optional.of(review));
       given(reviewMapper.toDto(review)).willReturn(reviewDto);
@@ -152,7 +152,7 @@ class ReviewServiceTest {
 
     @Test
     @DisplayName("회고 상세 조회 실패 - 존재하지 않는 회고 Id")
-    void getReview_throwsReviewNotFoundException_whenReviewDoseNotExist() {
+    void get_review_throwsReviewNotFoundException_whenReviewDoseNotExist() {
       // given
       given(reviewRepository.findById(reviewId)).willReturn(Optional.empty());
 
