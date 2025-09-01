@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -211,6 +212,27 @@ class ReviewServiceTest {
       // then
       assertThat(response.hasNext()).isFalse();
       assertThat(response.lastIndex()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("회고 전체 조회 - 데이터 없으면 빈 리스트 반환")
+    void getReviews_emptyList() {
+      // given
+      given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
+      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
+          .willReturn(List.of());
+
+      // when
+      ReviewDtoCursorResponse response = reviewService.getReviews(
+          1L, null, null, null, null, null, null);
+
+      // then
+      assertThat(response.hasNext()).isFalse();
+      assertThat(response.lastIndex()).isNull();
+      assertThat(response.content())
+          .asInstanceOf(InstanceOfAssertFactories.list(ReviewDto.class))
+          .isEmpty();
     }
   }
 }
