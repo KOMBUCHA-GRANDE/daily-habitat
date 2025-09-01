@@ -152,7 +152,7 @@ class ReviewServiceTest {
 
     @Test
     @DisplayName("회고 상세 조회 실패 - 존재하지 않는 회고 Id")
-    void get_review_throwsReviewNotFoundException_whenReviewDoseNotExist() {
+    void getReview_throwsReviewNotFoundException_whenReviewDoseNotExist() {
       // given
       given(reviewRepository.findById(reviewId)).willReturn(Optional.empty());
 
@@ -233,6 +233,20 @@ class ReviewServiceTest {
       assertThat(response.content())
           .asInstanceOf(InstanceOfAssertFactories.list(ReviewDto.class))
           .isEmpty();
+    }
+
+    @Test
+    @DisplayName("회고 전체 조회 실패 - 존재하지 않는 습관 Id")
+    // TODO: 습관 커스텀 예외로 변경
+    void getReviews_throwsIllegalArgumentException_whenHabitDoseNotExist() {
+      // given
+      given(habitRepository.findById(habitId)).willReturn(Optional.empty());
+
+      // when & then
+      assertThrows(IllegalArgumentException.class,
+          () -> reviewService.getReviews(habitId, null,
+              null, null, null, null, null));
+      then(habitRepository).should(times(1)).findById(habitId);
     }
   }
 }
