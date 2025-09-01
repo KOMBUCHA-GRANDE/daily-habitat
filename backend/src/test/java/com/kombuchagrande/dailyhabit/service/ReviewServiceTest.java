@@ -189,5 +189,28 @@ class ReviewServiceTest {
       assertThat(response.hasNext()).isTrue();
       assertThat(response.lastIndex()).isEqualTo(1L);
     }
+
+    @Test
+    @DisplayName("회고 전체 조회 성공 (마지막 페이지) - hasNext false, size 1")
+    void getReviews_success_hasNext_false_size1() {
+      // given
+      Review review1 = mock(Review.class);
+
+      given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
+      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
+          .willReturn(List.of(review1));
+
+      given(reviewMapper.toDto(review1)).willReturn(new ReviewDto(1L, 1L,  PeriodType.WEEKLY,
+          1, "t1", "c1", 1, "", "r1", LocalDateTime.now()));
+
+      // when
+      ReviewDtoCursorResponse response = reviewService.getReviews(
+          1L, PeriodType.WEEKLY, null, null, null, null, null);
+
+      // then
+      assertThat(response.hasNext()).isFalse();
+      assertThat(response.lastIndex()).isEqualTo(1L);
+    }
   }
 }
