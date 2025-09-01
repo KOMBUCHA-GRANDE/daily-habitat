@@ -3,13 +3,16 @@ package com.kombuchagrande.dailyhabit.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
+import com.kombuchagrande.dailyhabit.config.PagingProperties;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewCreateRequest;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
+import com.kombuchagrande.dailyhabit.dto.review.ReviewDtoCursorResponse;
 import com.kombuchagrande.dailyhabit.entity.Habit;
 import com.kombuchagrande.dailyhabit.entity.Review;
 import com.kombuchagrande.dailyhabit.entity.enums.PeriodType;
@@ -19,6 +22,7 @@ import com.kombuchagrande.dailyhabit.repository.HabitRepository;
 import com.kombuchagrande.dailyhabit.repository.ReviewRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,8 +32,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 
 @ExtendWith(MockitoExtension.class)
+@Import(PagingProperties.class)
 class ReviewServiceTest {
 
   @Mock
@@ -40,6 +46,9 @@ class ReviewServiceTest {
 
   @Mock
   private HabitRepository habitRepository;
+
+  @Mock
+  private PagingProperties pagingProperties;
 
   @InjectMocks
   private ReviewService reviewService;
@@ -125,7 +134,7 @@ class ReviewServiceTest {
 
     @Test
     @DisplayName("회고 상세 조회 성공")
-    void get_review_success() {
+    void getReview_success() {
       // given
       given(reviewRepository.findById(reviewId)).willReturn(Optional.of(review));
       given(reviewMapper.toDto(review)).willReturn(reviewDto);
@@ -150,6 +159,35 @@ class ReviewServiceTest {
       assertThrows(ReviewNotFoundException.class,
           () -> reviewService.get(reviewId));
       then(reviewRepository).should(times(1)).findById(reviewId);
+    }
+  }
+
+  @Nested
+  @DisplayName("회고 전체 조회")
+  public class GetReviewsTest {
+
+    @Test
+    @DisplayName("회고 전체 조회 성공 (첫 페이지) - hasNext true, size 1")
+    void getReviews_success_hasNext_true_size1() {
+      // given
+      Review review1 = mock(Review.class);
+      Review review2 = mock(Review.class);
+
+      given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
+      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
+          .willReturn(List.of(review1, review2));
+
+      given(reviewMapper.toDto(review1)).willReturn(new ReviewDto(1L, 1L,  PeriodType.WEEKLY,
+          1, "t1", "c1", 1, "", "r1", LocalDateTime.now()));
+
+      // when
+      ReviewDtoCursorResponse response = reviewService.getReviews(
+          1L, PeriodType.WEEKLY, null, null, null, null, null);
+
+      // then
+      assertThat(response.hasNext()).isTrue();
+      assertThat(response.lastIndex()).isEqualTo(1L);
     }
   }
 }
