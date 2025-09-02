@@ -2,6 +2,7 @@ package com.kombuchagrande.dailyhabit.repository.querydsl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.kombuchagrande.dailyhabit.config.PagingProperties;
 import com.kombuchagrande.dailyhabit.config.QuerydslConfig;
 import com.kombuchagrande.dailyhabit.entity.Habit;
 import com.kombuchagrande.dailyhabit.entity.Review;
@@ -26,7 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 @DataJpaTest
 @EnableJpaAuditing
-@Import(QuerydslConfig.class)
+@Import({QuerydslConfig.class, PagingProperties.class})
 @ActiveProfiles("test")
 class ReviewRepositoryCustomImplTest {
 
