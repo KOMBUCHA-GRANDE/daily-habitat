@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @DataJpaTest
@@ -31,9 +30,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 @Import({QuerydslConfig.class, PagingProperties.class})
 @ActiveProfiles("test")
 class ReviewRepositoryCustomImplTest {
-
-  @MockitoBean
-  private PagingProperties pagingProperties;
 
   @Autowired
   private ReviewRepository reviewRepository;
