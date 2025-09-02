@@ -67,7 +67,7 @@ public class ReviewService {
       LocalDate from,
       LocalDate to
   ) {
-    int size = pagingProperties.getDefaultSize();
+    int size = pagingProperties.defaultSize();
     getHabitOrThrow(habitId);
 
     List<Review> reviews = reviewRepository.findByCursor(

@@ -175,7 +175,7 @@ class ReviewServiceTest {
       Review review2 = mock(Review.class);
 
       given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
-      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(pagingProperties.defaultSize()).willReturn(1);
       given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
           .willReturn(List.of(review1, review2));
 
@@ -198,7 +198,7 @@ class ReviewServiceTest {
       Review review1 = mock(Review.class);
 
       given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
-      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(pagingProperties.defaultSize()).willReturn(1);
       given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
           .willReturn(List.of(review1));
 
@@ -219,7 +219,7 @@ class ReviewServiceTest {
     void getReviews_emptyList() {
       // given
       given(habitRepository.findById(habitId)).willReturn(Optional.of(habit));
-      given(pagingProperties.getDefaultSize()).willReturn(1);
+      given(pagingProperties.defaultSize()).willReturn(1);
       given(reviewRepository.findByCursor(any(), any(), any(), any(), any(), any(), any(), eq(2)))
           .willReturn(List.of());
 
