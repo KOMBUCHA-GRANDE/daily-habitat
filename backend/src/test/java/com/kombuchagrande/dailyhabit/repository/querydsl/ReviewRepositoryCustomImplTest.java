@@ -28,7 +28,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 @DataJpaTest
 @EnableJpaAuditing
-@Import(QuerydslConfig.class,)
+@Import(QuerydslConfig.class)
 @EnableConfigurationProperties(PagingProperties.class)
 @ActiveProfiles("test")
 class ReviewRepositoryCustomImplTest {
