@@ -1,6 +1,9 @@
 package com.kombucha.oauth
 
+import android.content.Context
+
 interface Login {
 
-    suspend fun requestLogin()
+    fun requestLogin(context: Context)
+
 }
