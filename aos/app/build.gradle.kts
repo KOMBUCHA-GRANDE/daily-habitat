@@ -1,4 +1,5 @@
 import com.google.devtools.ksp.gradle.KspExtension
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,6 +9,11 @@ plugins {
     alias(libs.plugins.hilt)
     id("kotlin-parcelize")
 }
+
+val localProps = Properties()
+localProps.load(rootProject.file("local.properties").inputStream())
+
+val kakaoKey: String = localProps.getProperty("KAKAO_NATIVE_APP_KEY")
 
 android {
     namespace = "com.kombucha.dailyhabitat"
@@ -21,6 +27,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoKey
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", kakaoKey)
     }
 
     buildTypes {
@@ -41,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     extensions.configure<KspExtension> {
         arg("circuit.codegen.mode", "hilt")
@@ -48,7 +57,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.kakao.sdk:v2-user:2.21.7")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
