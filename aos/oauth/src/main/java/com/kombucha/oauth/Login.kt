@@ -6,4 +6,5 @@ interface Login {
 
     fun requestLogin(context: Context)
 
+    fun logout()
 }

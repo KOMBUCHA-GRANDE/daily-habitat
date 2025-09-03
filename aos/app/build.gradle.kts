@@ -57,6 +57,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":oauth"))
+
     implementation("com.kakao.sdk:v2-user:2.21.7")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
