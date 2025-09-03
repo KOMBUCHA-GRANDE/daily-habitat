@@ -10,15 +10,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kombucha.dailyhabitat.ui.theme.DailyHabitatTheme
+import com.kombucha.oauth.GoogleLogin
 import com.kombucha.oauth.KakaoLogin
 import com.kombucha.oauth.Login
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val login : Login = KakaoLogin()
+    private val login : Login = GoogleLogin()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,13 @@ class MainActivity : ComponentActivity() {
             DailyHabitatTheme {
                 Scaffold {
                     innerPadding ->
-                    Button(modifier = Modifier.padding(innerPadding), onClick = {login.requestLogin(this)}) {
+                    val coroutineScope = rememberCoroutineScope()
+                    Button(modifier = Modifier.padding(innerPadding), onClick = {
+                        coroutineScope.launch {
+                            login.requestLogin(this@MainActivity)
+                        }
+                    })
+                    {
                         Text(text = "login")
                     }
                 }

@@ -1,7 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
+val localProps = Properties()
+localProps.load(rootProject.file("local.properties").inputStream())
+
+val clientId: String = localProps.getProperty("GOOGLE_CLIENT_ID")
 
 android {
     namespace = "com.kombucha.oauth"
@@ -12,6 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "GOOGLE_CLIENT_ID", clientId)
     }
 
     buildTypes {
@@ -27,10 +35,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        buildConfig = true
+    }
     kotlinOptions {
         jvmTarget = "11"
     }
 }
+
+
 
 dependencies {
     implementation("com.kakao.sdk:v2-user:2.21.7")

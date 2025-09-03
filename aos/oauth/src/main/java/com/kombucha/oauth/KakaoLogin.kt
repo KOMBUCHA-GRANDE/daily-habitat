@@ -9,7 +9,7 @@ import com.kakao.sdk.user.UserApiClient
 
 class KakaoLogin : Login {
 
-    override fun requestLogin(context: Context) {
+    override suspend fun requestLogin(context: Context) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context = context) { token, error ->
                 if (error != null) {
