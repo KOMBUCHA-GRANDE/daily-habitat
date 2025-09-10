@@ -17,11 +17,12 @@ import com.kombucha.dailyhabitat.ui.theme.DailyHabitatTheme
 import com.kombucha.oauth.GoogleLogin
 import com.kombucha.oauth.KakaoLogin
 import com.kombucha.oauth.Login
+import com.kombucha.oauth.NaverLogin
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val login : Login = GoogleLogin()
+    private val login : Login = NaverLogin()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
