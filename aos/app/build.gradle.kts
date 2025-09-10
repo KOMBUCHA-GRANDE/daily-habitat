@@ -14,6 +14,9 @@ val localProps = Properties()
 localProps.load(rootProject.file("local.properties").inputStream())
 
 val kakaoKey: String = localProps.getProperty("KAKAO_NATIVE_APP_KEY")
+val naverClientId: String = localProps.getProperty("NAVER_CLIENT_ID")
+val naverClientSecret: String = localProps.getProperty("NAVER_CLIENT_SECRET")
+val naverClientName: String = localProps.getProperty("NAVER_CLIENT_NAME")
 
 android {
     namespace = "com.kombucha.dailyhabitat"
@@ -29,6 +32,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoKey
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", kakaoKey)
+        buildConfigField("String", "NAVER_CLIENT_ID", naverClientId)
+        buildConfigField("String", "NAVER_CLIENT_SECRET", naverClientSecret)
+        buildConfigField("String", "NAVER_CLIENT_NAME", naverClientName)
     }
 
     buildTypes {
@@ -60,6 +66,7 @@ dependencies {
     implementation(project(":oauth"))
 
     implementation("com.kakao.sdk:v2-user:2.21.7")
+    implementation("com.navercorp.nid:oauth:5.9.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
