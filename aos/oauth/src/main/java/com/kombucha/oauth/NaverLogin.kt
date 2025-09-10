@@ -31,5 +31,6 @@ class NaverLogin : Login {
     }
 
     override fun logout() {
+        NaverIdLoginSDK.logout()
     }
 }
