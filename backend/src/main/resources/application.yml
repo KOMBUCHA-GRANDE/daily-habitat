@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: backend
+
+app:
+  paging:
+    default-size: 10
