@@ -1,9 +1,0 @@
-1756803030036|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists cashs cascade |drop table if exists cashs cascade 
-1756803030037|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists graduations cascade |drop table if exists graduations cascade 
-1756803030037|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists habit_records cascade |drop table if exists habit_records cascade 
-1756803030038|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists habits cascade |drop table if exists habits cascade 
-1756803030038|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists notification_settings cascade |drop table if exists notification_settings cascade 
-1756803030039|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists notifications cascade |drop table if exists notifications cascade 
-1756803030039|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists reviews cascade |drop table if exists reviews cascade 
-1756803030039|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists statistics cascade |drop table if exists statistics cascade 
-1756803030040|0|statement|connection 11|url jdbc:h2:mem:dc1838a1-59b0-403e-87b8-456ad17d8396|drop table if exists users cascade |drop table if exists users cascade 
