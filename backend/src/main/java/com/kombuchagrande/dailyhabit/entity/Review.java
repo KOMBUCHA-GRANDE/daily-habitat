@@ -24,6 +24,9 @@ public class Review extends BaseSoftDeletableEntity{
     private PeriodType periodType;
 
     @Column(nullable = false)
+    private int periodNumber;
+
+    @Column(nullable = false)
     private LocalDate startDate;
 
     @Column(nullable = false, length = 100)
@@ -39,5 +42,4 @@ public class Review extends BaseSoftDeletableEntity{
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String resolution;
-
 }
