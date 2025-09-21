@@ -35,3 +35,7 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+app:
+  paging:
+    default-size: 10
