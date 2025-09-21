@@ -14,9 +14,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseSoftDeletableEntity {
 
-//    @Column(nullable = false)
-//    private String email;
-
     @Column(length = 50, nullable = false)
     private String nickname;
 
