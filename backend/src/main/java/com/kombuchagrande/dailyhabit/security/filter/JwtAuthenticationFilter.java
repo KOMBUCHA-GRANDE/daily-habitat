@@ -102,6 +102,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    // Todo ErrorResponse 처리
     private void write401(HttpServletResponse response, String code, String message) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");

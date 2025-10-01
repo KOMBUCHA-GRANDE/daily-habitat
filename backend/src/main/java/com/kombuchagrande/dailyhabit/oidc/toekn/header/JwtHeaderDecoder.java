@@ -12,6 +12,8 @@ public final class JwtHeaderDecoder {
 
     private final ObjectMapper om;
 
+
+    //Todo 커스텀 예외처리
     /**
      * JWT의 <header>.<payload>.<signature> 중 header를 Base64Url 디코드하여 DTO로 변환
      */
