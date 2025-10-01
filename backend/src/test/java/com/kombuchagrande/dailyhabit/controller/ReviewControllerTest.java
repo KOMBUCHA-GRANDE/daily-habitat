@@ -3,6 +3,7 @@ package com.kombuchagrande.dailyhabit.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -13,6 +14,8 @@ import com.kombuchagrande.dailyhabit.dto.review.ReviewCreateRequest;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDto;
 import com.kombuchagrande.dailyhabit.dto.review.ReviewDtoCursorResponse;
 import com.kombuchagrande.dailyhabit.entity.enums.PeriodType;
+import com.kombuchagrande.dailyhabit.security.jwt.JwtService;
+import com.kombuchagrande.dailyhabit.security.jwt.JwtTokenProvider;
 import com.kombuchagrande.dailyhabit.service.ReviewService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,9 +27,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+@WithMockUser(username = "user", roles = {"USER"})
 @WebMvcTest(ReviewController.class)
 class ReviewControllerTest {
 
@@ -38,6 +43,12 @@ class ReviewControllerTest {
 
   @MockitoBean
   private ReviewService reviewService;
+
+  @MockitoBean
+  JwtTokenProvider jwtTokenProvider;
+
+  @MockitoBean
+  JwtService jwtService;
 
   private Long habitId;
   private Long reviewId;
@@ -93,6 +104,7 @@ class ReviewControllerTest {
 
       // when & then
       mockMvc.perform(post("/api/reviews")
+                      .with(csrf())
               .contentType(MediaType.APPLICATION_JSON)
               .content(objectMapper.writeValueAsString(reviewCreateRequest)))
           .andExpect(status().isCreated())
