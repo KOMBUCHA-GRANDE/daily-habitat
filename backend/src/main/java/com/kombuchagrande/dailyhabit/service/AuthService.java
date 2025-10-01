@@ -1,7 +1,7 @@
 package com.kombuchagrande.dailyhabit.service;
 
 import com.kombuchagrande.dailyhabit.security.jwt.JwtService;
-import com.kombuchagrande.dailyhabit.security.jwt.dto.JwtTokenResponse;
+import com.kombuchagrande.dailyhabit.security.jwt.dto.AccessTokenRenewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class AuthService {
     private final JwtService jwtService;
 
     // 엑세스 재발급
-    public JwtTokenResponse refresh(String refreshToken) {
+    public AccessTokenRenewResponse refresh(String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) {
             throw new IllegalArgumentException("refreshToken is required");
         }
