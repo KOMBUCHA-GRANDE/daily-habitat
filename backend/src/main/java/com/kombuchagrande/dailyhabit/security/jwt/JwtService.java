@@ -3,10 +3,7 @@ package com.kombuchagrande.dailyhabit.security.jwt;
 import com.kombuchagrande.dailyhabit.entity.User;
 import com.kombuchagrande.dailyhabit.entity.enums.Role;
 import com.kombuchagrande.dailyhabit.repository.UserRepository;
-import com.kombuchagrande.dailyhabit.security.jwt.dto.JwtAccessPayloadDto;
-import com.kombuchagrande.dailyhabit.security.jwt.dto.JwtPayloadDto;
-import com.kombuchagrande.dailyhabit.security.jwt.dto.JwtRefreshPayloadDto;
-import com.kombuchagrande.dailyhabit.security.jwt.dto.JwtTokenResponse;
+import com.kombuchagrande.dailyhabit.security.jwt.dto.*;
 import com.kombuchagrande.dailyhabit.security.session.RedisTokenStore;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -37,20 +34,29 @@ public class JwtService {
 
     // 로그인 성공 시 발급
     @Transactional
-    public JwtTokenResponse registerJwtToken(JwtPayloadDto payload) {
+    public LoginTokenResponse registerJwtToken(JwtPayloadDto payload, boolean isNewUser) {
         String tid = java.util.UUID.randomUUID().toString();
-        String access = jwtTokenProvider.createAccessToken(payload.userId(), payload.role().name(), tid, accessExp);
-        String refresh = jwtTokenProvider.createRefreshToken(payload.userId(), tid, refreshExp);
+        Instant now = Instant.now();
+
+        Instant accessExpAt = now.plusSeconds(accessExp);
+        Instant refreshExpAt = now.plusSeconds(refreshExp);
+
+        String access = jwtTokenProvider.createAccessToken(payload.userId(), payload.role().name(), tid, now, accessExpAt);
+        String refresh = jwtTokenProvider.createRefreshToken(payload.userId(), tid, now, refreshExpAt);
 
         redisTokenStore.saveRefreshSession(tid, payload.userId(), Duration.ofSeconds(refreshExp));
-        redisTokenStore.addIndex(payload.userId(), tid);
 
-        return new JwtTokenResponse(access, refresh);
+        return new LoginTokenResponse(
+                access,
+                refresh,
+                accessExpAt.toEpochMilli(),
+                isNewUser
+        );
     }
 
     // 재발급
     @Transactional
-    public JwtTokenResponse refreshJwtToken(String refreshToken) {
+    public AccessTokenRenewResponse refreshJwtToken(String refreshToken) {
         Claims claims = jwtTokenProvider.parseClaimsStrict(refreshToken);
         JwtRefreshPayloadDto jwtRefreshPayloadDto = JwtRefreshPayloadDto.fromClaims(claims);
 
@@ -62,8 +68,11 @@ public class JwtService {
                 .map(User::getRole)
                 .orElseThrow(() -> new JwtException("user_not_found"));
 
-        String newAccess = jwtTokenProvider.createAccessToken(jwtRefreshPayloadDto.userId(), latestRole.name(), jwtRefreshPayloadDto.tid(), accessExp);
-        return new JwtTokenResponse(newAccess, refreshToken);
+        Instant now = Instant.now();
+        Instant accessExpAt = now.plusSeconds(accessExp);
+
+        String newAccess = jwtTokenProvider.createAccessToken(jwtRefreshPayloadDto.userId(), latestRole.name(), jwtRefreshPayloadDto.tid(), now, accessExpAt);
+        return new AccessTokenRenewResponse(newAccess, accessExpAt.toEpochMilli());
     }
 
     // 단일 기기 로그아웃
