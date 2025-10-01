@@ -8,6 +8,7 @@ import com.kombuchagrande.dailyhabit.security.handler.OidcLoginFailureHandler;
 import com.kombuchagrande.dailyhabit.security.handler.OidcLoginSuccessHandler;
 import com.kombuchagrande.dailyhabit.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.List;
 
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
