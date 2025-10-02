@@ -2,8 +2,7 @@ spring:
   application:
     name: daily-habitat-backend
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     password:
     driver-class-name: org.h2.Driver
 
@@ -39,3 +38,29 @@ decorator:
 app:
   paging:
     default-size: 10
+
+
+jwt:
+  secret: ${JWT_SECRET:dkdkdkeiwhfdklfslkfjsldjfdddddkdkdkdkdkdwidwijhdwihiuhwddsskdsklsjdflskfjlsf}   # HMAC 서명용 비밀키 (Base64 인코딩 추천)
+  clock-skew-seconds: ${JWT_CLOCK_SKEW_SECONDS:5}  # 기본 5 (없으면 허용 시간 차 없음)
+
+  access-token-expiration-seconds: ${JWT_ACCESS_TOKEN_EXP:900}   # 기본 900초 = 15분
+  refresh-token-expiration-seconds: ${JWT_REFRESH_TOKEN_EXP:1209600} # 기본 1209600초 = 14일
+
+security:
+  oidc:
+    providers:
+      GOOGLE:
+        issuer: https://accounts.google.com
+        clientId: ${GOOGLE_CLIENT_ID:google_id}
+        jwksUri: https://www.googleapis.com/oauth2/v3/certs
+
+      KAKAO:
+        issuer: https://kauth.kakao.com
+        clientId: ${KAKAO_CLIENT_ID:kakao_id}
+        jwksUri: https://kauth.kakao.com/.well-known/jwks.json
+
+      NAVER:
+        issuer: https://nid.naver.com
+        clientId: ${NAVER_CLIENT_ID:naver_id}
+        jwksUri: https://nid.naver.com/oauth2/jwks
