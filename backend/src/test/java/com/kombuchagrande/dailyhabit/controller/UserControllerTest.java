@@ -25,9 +25,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,11 +68,9 @@ class UserControllerTest {
     @Test
     void me_authenticated_returnDto() throws Exception {
         //given
+        given(userService.get(userId)).willReturn(userDto);
 
-        //when
-        when(userService.get(userId)).thenReturn(userDto);
-
-        //then
+        //when then
         mockMvc.perform(get("/api/users/me")
                         .with(user(principal)))
                 .andExpect(status().isOk())
@@ -80,17 +78,15 @@ class UserControllerTest {
 
     }
 
-    @DisplayName("인증 객체를 가지고 있는 사용자 정보 수정을 할 수 있다.")
+    @DisplayName("인증 객체를 가지고 있는 사용자 정보 수정할 수 있다.")
     @Test
     void update_authenticated_returnDto() throws Exception{
         //given
         UserUpdateRequest request = new UserUpdateRequest("새 닉네임", true);
         UserDto newUserDto = new UserDto(1L, "새 닉네임", true);
+        given(userService.update(userId, request)).willReturn(newUserDto);
 
-        //when
-        when(userService.update(userId, request)).thenReturn(newUserDto);
-
-        //then
+        //when then
         mockMvc.perform(patch("/api/users")
                         .with(csrf())
                         .with(user(principal))
@@ -102,17 +98,15 @@ class UserControllerTest {
         verify(userService).update(eq(userId), any(UserUpdateRequest.class));
     }
 
-    @DisplayName("인증 객체를 가지고 있는 사용자 정보 수정을 할 수 있다.")
+    @DisplayName("인증 객체를 가지고 있는 사용자 정보 수정할 수 있다.")
     @Test
     void update_blankNickname_returnsBadRequest() throws Exception{
         //given
         UserUpdateRequest request = new UserUpdateRequest("", true);
         UserDto newUserDto = new UserDto(1L, "새 닉네임", true);
+        given(userService.update(userId, request)).willReturn(newUserDto);
 
-        //when
-        when(userService.update(userId, request)).thenReturn(newUserDto);
-
-        //then
+        //when then
         mockMvc.perform(patch("/api/users")
                         .with(csrf())
                         .with(user(principal))
@@ -121,6 +115,18 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResolvedException())
                         .isInstanceOf(MethodArgumentNotValidException.class));
+    }
+
+    @DisplayName("인증 객체를 가지고 있는 사용자를 논리 삭제할 수 있다.")
+    @Test
+    void softDelete_authenticated() throws Exception {
+
+        //when then
+        mockMvc.perform(delete("/api/users")
+                        .with(csrf())
+                        .with(user(principal)))
+                .andExpect(status().isNoContent());
+        verify(userService).softDelete(userId);
     }
 
 
