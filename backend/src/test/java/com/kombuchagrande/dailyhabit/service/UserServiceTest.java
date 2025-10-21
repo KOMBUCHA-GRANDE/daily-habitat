@@ -15,14 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -60,8 +59,8 @@ class UserServiceTest {
     @Test
     void getUser() {
         //given
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(userMapper.toDto(user)).thenReturn(userDto);
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userMapper.toDto(user)).willReturn(userDto);
 
         //when
         UserDto result = userService.get(userId);
@@ -75,7 +74,7 @@ class UserServiceTest {
     @Test
     void get_notFound_throws() {
         //given
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
 
         //when then
         assertThatThrownBy(() -> userService.get(userId))
@@ -89,8 +88,8 @@ class UserServiceTest {
         UserUpdateRequest request = new UserUpdateRequest("새 닉네임", true);
         UserDto newUserDto = new UserDto(1L, "새 닉네임", true);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(userMapper.toDto(user)).thenReturn(newUserDto);
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userMapper.toDto(user)).willReturn(newUserDto);
 
         //when
         UserDto result = userService.update(userId, request);
@@ -105,10 +104,34 @@ class UserServiceTest {
     void update_notFound_throws() {
         //given
         UserUpdateRequest request = new UserUpdateRequest("새 닉테임", true);
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
 
         //when then
         assertThatThrownBy(() -> userService.update(userId, request))
+                .isInstanceOf(IllegalArgumentException.class); //Todo 커스텀 예외처리
+    }
+
+    @DisplayName("사용자의 id로 논리 삭제가 가능하다.")
+    @Test
+    void softSoftDeleteUser() {
+        //given
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        //when
+        userService.softDelete(userId);
+
+        //then
+        assertThat(user.isDeleted()).isTrue();
+    }
+
+    @DisplayName("삭제 시, 유저가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void softSoftDelete_notFound_throws() {
+        //given
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
+
+        //when then
+        assertThatThrownBy(() -> userService.softDelete(userId))
                 .isInstanceOf(IllegalArgumentException.class); //Todo 커스텀 예외처리
     }
 
