@@ -35,11 +35,20 @@ public class UserController {
     public ResponseEntity<UserDto> update(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody @Valid UserUpdateRequest request
-            ) {
+    ) {
         UserDto userDto = userService.update(user.getUserId(), request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userDto);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.softDelete(userDetails.getUserId());
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }
