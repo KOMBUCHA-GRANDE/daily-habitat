@@ -37,4 +37,8 @@ public class User extends BaseSoftDeletableEntity {
     public void updateNotificationEnabled(Boolean notificationEnabled) {
         this.notificationEnabled = notificationEnabled;
     }
+
+    public void softDelete() {
+        delete();
+    }
 }
