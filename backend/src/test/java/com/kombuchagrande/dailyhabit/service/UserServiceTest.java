@@ -1,6 +1,7 @@
 package com.kombuchagrande.dailyhabit.service;
 
 import com.kombuchagrande.dailyhabit.dto.user.UserDto;
+import com.kombuchagrande.dailyhabit.dto.user.UserUpdateRequest;
 import com.kombuchagrande.dailyhabit.entity.User;
 import com.kombuchagrande.dailyhabit.entity.enums.ProviderType;
 import com.kombuchagrande.dailyhabit.entity.enums.Role;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Optional;
 
@@ -65,7 +67,7 @@ class UserServiceTest {
         UserDto result = userService.get(userId);
 
         //then
-        assertThat(result).isSameAs(userDto);
+        assertThat(result).isEqualTo(userDto);
         verify(userRepository).findById(userId);
     }
 
@@ -77,9 +79,38 @@ class UserServiceTest {
 
         //when then
         assertThatThrownBy(() -> userService.get(userId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class); //Todo 커스텀 예외처리
     }
 
+    @DisplayName("유저 정보를 수정할 수 있다.")
+    @Test
+    void updateUser() {
+        //given
+        UserUpdateRequest request = new UserUpdateRequest("새 닉네임", true);
+        UserDto newUserDto = new UserDto(1L, "새 닉네임", true);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userMapper.toDto(user)).thenReturn(newUserDto);
+
+        //when
+        UserDto result = userService.update(userId, request);
+
+        //then
+        assertThat(result).isEqualTo(newUserDto);
+        assertThat(user.getNickname()).isEqualTo("새 닉네임");
+    }
+
+    @DisplayName("유저 업데이트 시, 유저가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void update_notFound_throws() {
+        //given
+        UserUpdateRequest request = new UserUpdateRequest("새 닉테임", true);
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        //when then
+        assertThatThrownBy(() -> userService.update(userId, request))
+                .isInstanceOf(IllegalArgumentException.class); //Todo 커스텀 예외처리
+    }
 
 
 }
