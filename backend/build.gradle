@@ -27,7 +27,8 @@ dependencies {
 
 	// DB & SQL
 	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly "com.mysql:mysql-connector-j:8.0.33"
+	//runtimeOnly 'org.postgresql:postgresql'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -48,6 +49,26 @@ dependencies {
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// TestContainer
+	testImplementation "org.testcontainers:testcontainers:1.20.2"
+	testImplementation "org.testcontainers:junit-jupiter:1.20.2"
+
+
+	//------------------------
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly  'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly  'io.jsonwebtoken:jjwt-jackson:0.12.3' // JSON 처리
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// RestClient에서 HttpComponentsClientHttpRequestFactory 사용 시 필요 (커넥션 풀, readTimeout 설정 지원)
+	implementation 'org.apache.httpcomponents.client5:httpclient5'
+
 }
 
 def querydslDir="$buildDir/generated/querydsl"

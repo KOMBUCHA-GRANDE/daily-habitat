@@ -8,6 +8,7 @@ import com.kombuchagrande.dailyhabit.entity.Review;
 import com.kombuchagrande.dailyhabit.entity.User;
 import com.kombuchagrande.dailyhabit.entity.enums.PeriodType;
 import com.kombuchagrande.dailyhabit.entity.enums.ProviderType;
+import com.kombuchagrande.dailyhabit.entity.enums.Role;
 import com.kombuchagrande.dailyhabit.enums.SortDirection;
 import com.kombuchagrande.dailyhabit.repository.ReviewRepository;
 import jakarta.persistence.EntityManager;
@@ -51,9 +52,10 @@ class ReviewRepositoryCustomImplTest {
 
     User user = User.builder()
         .nickname("testUser")
-        .email("test@example.com")
         .providerType(ProviderType.GOOGLE)
         .notificationEnabled(true)
+        .providerId("1234")
+        .role(Role.USER)
         .build();
 
     habit = Habit.builder()
