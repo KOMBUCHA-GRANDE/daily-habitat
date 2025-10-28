@@ -3,6 +3,7 @@ package com.kombuchagrande.dailyhabit.oidc.keys.cache;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kombuchagrande.dailyhabit.oidc.keys.fetch.JwksFetcher;
 import com.kombuchagrande.dailyhabit.oidc.keys.dto.JwksSetDto;
+import com.kombuchagrande.dailyhabit.oidc.keys.fetch.RestJwksFetcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwksCache {
 
-    private final JwksFetcher fetcher;      // 원격에서 JWKS JSON 가져오는 컴포넌트
+    private final RestJwksFetcher fetcher;      // 원격에서 JWKS JSON 가져오는 컴포넌트
     private final ObjectMapper objectMapper;
 
     // 캐시 미스일 때만 원격 호출
