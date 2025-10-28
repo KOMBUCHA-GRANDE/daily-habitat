@@ -1,7 +1,6 @@
 package com.kombuchagrande.dailyhabit.oidc.keys.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kombuchagrande.dailyhabit.oidc.keys.fetch.JwksFetcher;
 import com.kombuchagrande.dailyhabit.oidc.keys.dto.JwksSetDto;
 import com.kombuchagrande.dailyhabit.oidc.keys.fetch.RestJwksFetcher;
 import lombok.RequiredArgsConstructor;
