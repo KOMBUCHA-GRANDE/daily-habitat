@@ -1,6 +1,7 @@
-package com.kombuchagrande.dailyhabit.oidc.provider;
+package com.kombuchagrande.dailyhabit.config.oidc;
 
 import com.kombuchagrande.dailyhabit.entity.enums.ProviderType;
+import com.kombuchagrande.dailyhabit.oidc.provider.AllowedAlg;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
