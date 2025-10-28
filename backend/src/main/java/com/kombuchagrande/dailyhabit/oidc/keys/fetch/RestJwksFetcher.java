@@ -1,16 +1,15 @@
 package com.kombuchagrande.dailyhabit.oidc.keys.fetch;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class RestJwksFetcher implements JwksFetcher {
+public class RestJwksFetcher {
 
     private final RestClient jwksRestClient;
 
-    @Override
     public String fetchJson(String jwksUri) {
         return jwksRestClient.get()
                 .uri(jwksUri)
