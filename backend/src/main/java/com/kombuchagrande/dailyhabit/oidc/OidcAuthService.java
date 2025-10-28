@@ -3,7 +3,7 @@ package com.kombuchagrande.dailyhabit.oidc;
 
 import com.kombuchagrande.dailyhabit.oidc.dto.OidcVerificationCommand;
 import com.kombuchagrande.dailyhabit.oidc.dto.VerifiedOidc;
-import com.kombuchagrande.dailyhabit.oidc.provider.OidcProperties;
+import com.kombuchagrande.dailyhabit.config.oidc.OidcProperties;
 import com.kombuchagrande.dailyhabit.oidc.provider.OidcProviderRegistry;
 import com.kombuchagrande.dailyhabit.oidc.toekn.OidcIdTokenVerifier;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,7 @@ import com.kombuchagrande.dailyhabit.exception.KidNotFoundException;
 import com.kombuchagrande.dailyhabit.oidc.keys.dto.JwksSetDto;
 import com.kombuchagrande.dailyhabit.oidc.dto.VerifiedOidc;
 import com.kombuchagrande.dailyhabit.oidc.keys.fetch.JwksKeyResolver;
-import com.kombuchagrande.dailyhabit.oidc.provider.OidcProperties;
+import com.kombuchagrande.dailyhabit.config.oidc.OidcProperties;
 import com.kombuchagrande.dailyhabit.oidc.toekn.header.JwtHeaderDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

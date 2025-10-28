@@ -1,5 +1,6 @@
 package com.kombuchagrande.dailyhabit.oidc.provider;
 
+import com.kombuchagrande.dailyhabit.config.oidc.OidcProperties;
 import com.kombuchagrande.dailyhabit.entity.enums.ProviderType;
 import org.springframework.stereotype.Component;
 
