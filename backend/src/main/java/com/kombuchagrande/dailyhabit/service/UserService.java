@@ -1,12 +1,15 @@
 package com.kombuchagrande.dailyhabit.service;
 
 import com.kombuchagrande.dailyhabit.dto.user.UserDto;
+import com.kombuchagrande.dailyhabit.dto.user.UserUpdateRequest;
 import com.kombuchagrande.dailyhabit.entity.User;
 import com.kombuchagrande.dailyhabit.mapper.UserMapper;
 import com.kombuchagrande.dailyhabit.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Slf4j
@@ -25,5 +28,20 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
+    @Transactional
+    public UserDto update(Long userId, UserUpdateRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException());//Todo 커스텀 예외처리
+
+        if(request.nickname() != null) {
+            user.updateNickname(request.nickname());
+        }
+        if(request.notificationEnabled() != null) {
+            user.updateNotificationEnabled(request.notificationEnabled());
+        }
+
+        return userMapper.toDto(user);
+    }
 }
 

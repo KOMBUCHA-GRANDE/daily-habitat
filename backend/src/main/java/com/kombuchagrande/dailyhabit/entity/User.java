@@ -30,4 +30,11 @@ public class User extends BaseSoftDeletableEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void updateNotificationEnabled(Boolean notificationEnabled) {
+        this.notificationEnabled = notificationEnabled;
+    }
 }
