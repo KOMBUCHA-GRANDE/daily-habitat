@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HabitSchedule extends BaseEntity {
+public class HabitFrequencyPeriod extends BaseEntity {
 
     @Column(nullable = false)
     private Long habitId;
