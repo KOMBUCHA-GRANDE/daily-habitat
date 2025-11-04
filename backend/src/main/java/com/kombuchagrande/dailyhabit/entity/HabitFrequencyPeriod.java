@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "habit_schedules")
+@Table(name = "habit_frequency_period")
 @Getter
 @Builder
 @AllArgsConstructor
